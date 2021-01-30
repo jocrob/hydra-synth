@@ -1,5 +1,6 @@
 const glslTransforms = require('./glsl/glsl-functions.js')
 const GlslSource = require('./glsl-source.js')
+const raymarchGlsl = require('./raymarching/raymarch-glsl')
 
 class GeneratorFactory {
   constructor ({
@@ -41,6 +42,8 @@ class GeneratorFactory {
  }
 
  _addMethod (method, transform) {
+   console.log("added a method");
+   console.log(method);
     this.glslTransforms[method] = transform
     if (transform.type === 'src') {
       const func = (...args) => new this.sourceClass({
@@ -66,6 +69,11 @@ class GeneratorFactory {
   setFunction(obj) {
     var processedGlsl = processGlsl(obj)
     if(processedGlsl) this._addMethod(obj.name, processedGlsl)
+  }
+
+  setRaymarcher(obj) {
+    const rm =  new raymarchGlsl(obj)
+    this.setFunction(rm.srcObj())
   }
 }
 

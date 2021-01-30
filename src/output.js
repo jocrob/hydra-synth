@@ -100,6 +100,9 @@ Output.prototype.render = function (passes) {
             return self.fbos[self.pingPongIndex]
           }
         })
+    
+    console.log("uniforms rendered: ")
+    console.log(uniforms);
 
   self.draw = self.regl({
     frag: pass.frag,
@@ -116,7 +119,6 @@ Output.prototype.render = function (passes) {
 
 
 Output.prototype.tick = function (props) {
-//  console.log(props)
   this.draw(props)
 }
 

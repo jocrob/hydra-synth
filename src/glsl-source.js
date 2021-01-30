@@ -64,6 +64,9 @@ GlslSource.prototype.glsl = function () {
 
 GlslSource.prototype.compile = function (transforms) {
 
+  console.log(`funcs passed to generate glsl: `);
+  console.log(transforms);
+
   var shaderInfo = generateGlsl(transforms)
   var uniforms = {}
   shaderInfo.uniforms.forEach((uniform) => { uniforms[uniform.name] = uniform.value })
@@ -93,6 +96,15 @@ GlslSource.prototype.compile = function (transforms) {
   }).join('')}
 
   ${shaderInfo.glslFunctions.map((transform) => {
+    if(transform.transform.raymarcher) {
+      console.log('raymarcher found')
+      return `
+            ${transform.transform.helperGlsl}
+          `
+    }
+  }).join('')}
+
+  ${shaderInfo.glslFunctions.map((transform) => {
     return `
             ${transform.transform.glsl}
           `
@@ -104,6 +116,8 @@ GlslSource.prototype.compile = function (transforms) {
     gl_FragColor = ${shaderInfo.fragColor};
   }
   `
+
+  // console.log(frag);
 
   return {
     frag: frag,

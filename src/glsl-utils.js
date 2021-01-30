@@ -130,6 +130,7 @@ function formatArguments (transform, startIndex) {
   //  console.log('processing args', transform, startIndex)
   const defaultArgs = transform.transform.inputs
   const userArgs = transform.userArgs
+  const allArgsUniform = transform.transform.allArgsUniform
   return defaultArgs.map( (input, index) => {
     const typedArg = {
       value: input.default,
@@ -140,12 +141,29 @@ function formatArguments (transform, startIndex) {
       //  generateGlsl: null // function for creating glsl
     }
 
-    if(typedArg.type === 'float') typedArg.value = ensure_decimal_dot(input.default)
+    if(typedArg.type === 'float' && !allArgsUniform) typedArg.value = ensure_decimal_dot(input.default)
     if (input.type.startsWith('vec')) {
       try {
         typedArg.vecLen = Number.parseInt(input.type.substr(3))
       } catch (e) {
         console.log(`Error determining length of vector input type ${input.type} (${input.name})`)
+      }
+    }
+
+    //Converting arg values to functions so they'll be set as uniforms in the fragment shader
+    if (allArgsUniform) {
+      if (userArgs.length > index && typeof userArgs[index] !== 'function') {
+        const val = userArgs[index]
+        userArgs[index] = () => val
+      }
+      else if (userArgs.length <= index) {
+        const val = typedArg.value
+        if (typeof typedArg.value !== 'function') {
+          userArgs.push(() => val)
+        }
+        else {
+          userArgs.push(val)
+        }
       }
     }
 
@@ -220,7 +238,7 @@ function formatArguments (transform, startIndex) {
       // add tp uniform array if is a function that will pass in a different value on each render frame,
       // or a texture/ external source
 
-      if(typedArg.isUniform) {
+      if(typedArg.isUniform && !allArgsUniform) {
         typedArg.name += startIndex
         //  shaderParams.uniforms.push(typedArg)
       }

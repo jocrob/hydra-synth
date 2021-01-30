@@ -362,6 +362,7 @@ class HydraRenderer {
       }
     })
     this.synth.setFunction = this.generator.setFunction.bind(this.generator)
+    this.synth.setRaymarcher = this.generator.setRaymarcher.bind(this.generator)
   }
 
   _render (output) {
