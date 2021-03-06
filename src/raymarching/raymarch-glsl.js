@@ -6,12 +6,16 @@ class raymarchGlsl {
         name = 'raymarcher',
         inputs = [],
         lightPos = 'vec3(0, 5, 6)',
-        distFunc = null
+        distFunc = null,
+        rayMarchFunc = null,
+        lightFunc = null
     } = {}) {
         this.name = name
         this.inputs = inputs
         this.lightPos = lightPos
         this.distFunc = distFunc
+        this.rayMarchFunc = rayMarchFunc
+        this.lightFunc = lightFunc
         this.init()
     }
 
@@ -71,18 +75,17 @@ class raymarchGlsl {
             ${this.distFunc ? this.distFunc : `
             vec4 s = vec4(0, 1, 6, 1);
             
-            //float sphereDist =  length(p-s.xyz)-s.w;
-            float octDist = sdOctahedron(p-vec3(0,1,6), 1.);
-            float d = octDist;
+            float sphereDist =  length(p-s.xyz)-s.w;
             
-            //float d = sphereDist;
+            float d = sphereDist;
             return d;
             `}
         }
 
         float RayMarch(vec3 ro, vec3 rd) {
+            ${this.rayMarchFunc ? this.rayMarchFunc : `
             float dO=0.;
-            
+        
             for(int i=0; i<MAX_STEPS; i++) {
                 vec3 p = ro + rd*dO;
                 float dS = GetDist(p);
@@ -91,6 +94,7 @@ class raymarchGlsl {
             }
             
             return dO;
+            `}
         }
 
         vec3 GetNormal(vec3 p) {
@@ -106,6 +110,7 @@ class raymarchGlsl {
         }
 
         float GetLight(vec3 p) {
+            ${this.lightFunc ? this.lightFunc : `
             vec3 lightPos = ${this.lightPos};
             vec3 l = normalize(lightPos-p);
             vec3 n = GetNormal(p);
@@ -115,6 +120,7 @@ class raymarchGlsl {
             if(d<length(lightPos-p)) dif *= .1;
             
             return dif;
+            `}
         }
     `
     }

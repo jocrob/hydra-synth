@@ -72,6 +72,7 @@ class GeneratorFactory {
   }
 
   setRaymarcher(obj) {
+    console.log("using jocrob hydra synth")
     const rm =  new raymarchGlsl(obj)
     this.setFunction(rm.srcObj())
   }
