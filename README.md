@@ -1,5 +1,7 @@
 ### Ray Marching Source and Helper Functions for Hydra-Synth
 
+![Example Image](/example-images/top-image.png)
+
 This fork adds a setRaymarcher function to Hydra-Synth, which allows users to easily create ray marching fragment shaders within the Hydra editor. The resulting fragment shader can be referenced as a source and used similarly to existing sources like gradient, noise, osc, etc. In addition to the setRaymarcher function, a collection of glsl signed distance functions is included, which can be used when creating the ray marching shader.
 
 ### Set Up 
