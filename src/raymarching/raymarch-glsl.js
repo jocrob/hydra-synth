@@ -8,7 +8,8 @@ class raymarchGlsl {
         lightPos = 'vec3(0, 5, 6)',
         distFunc = null,
         rayMarchFunc = null,
-        lightFunc = null
+        lightFunc = null,
+        addGLSL = null
     } = {}) {
         this.name = name
         this.inputs = inputs
@@ -16,6 +17,7 @@ class raymarchGlsl {
         this.distFunc = distFunc
         this.rayMarchFunc = rayMarchFunc
         this.lightFunc = lightFunc
+        this.addGLSL = addGLSL
         this.init()
     }
 
@@ -59,6 +61,8 @@ class raymarchGlsl {
     helperGlsl() {
         return `
         ${sdfs}
+
+        ${this.addGLSL ? this.addGLSL : ''}
 
         // "ShaderToy Tutorial - Ray Marching for Dummies!" 
         // by Martijn Steinrucken aka BigWings/CountFrolic - 2018
