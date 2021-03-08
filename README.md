@@ -25,7 +25,7 @@ To create a default raymarching source, which will render a sphere, you can run 
   rm().out()
 ```
 
-##### Fragment Shader
+#### Fragment Shader
 
 The resulting default fragment shader is based off of [Martijn Steinrucken's raymarching tutorial](https://youtu.be/PGtv-dBi2wE) with minor changes like the addition of ambient light. To explore how the fragment shader is built, look in [src/raymarching/raymarch-glsl.js](https://github.com/jocrob/hydra-synth/blob/master/src/raymarching/raymarch-glsl.js). The fragment shader is shown below:
 
@@ -121,11 +121,11 @@ vec4 rm(vec2 _st) {
 }
 ```
 
-##### Properties of setRaymarcher()
+#### Properties of setRaymarcher()
 
 The functions and values in this default fragment shader can be edited by adding properties to the object sent to setRaymarcher.
 
-- *inputs*: allows you to declare uniform values within the fragment shader, and is used like the inputs property in hydra's setFunction().
+- **inputs**: allows you to declare uniform values within the fragment shader, and is used like the inputs property in hydra's setFunction().
   - ex:
       ```
       setRaymarcher({
@@ -150,18 +150,18 @@ The functions and values in this default fragment shader can be edited by adding
       ```
   - If no arguments are sent when calling rm(), the default values declared for each input will be used. Otherwise the arguments sent to rm() will be assigned to each input. For example, `rm([0, 0, 0], () => a.fft[0]) ` will set the 'light' uniform equal to vec3(0,0,0) and uTime equal to the value of the first audio bin.
 
-- *lightPos*: takes a string and allows you to set the position of the light in the ray marched scene. The string is interpreted as GLSL so you must use GLSL syntax when assigning the position. 
+- **lightPos**: takes a string and allows you to set the position of the light in the ray marched scene. The string is interpreted as GLSL so you must use GLSL syntax when assigning the position. 
   - ex: `lightPos: 'vec3(0,5,5)'`
 
-- *distFunc*: takes a string, and replaces the contents of `float GetDist(vec3 p)` in the fragment shader. The string is interpreted as GLSL so you must use GLSL syntax. You would use this property to specify the signed distance functions that get rendered.
+- **distFunc**: takes a string, and replaces the contents of `float GetDist(vec3 p)` in the fragment shader. The string is interpreted as GLSL so you must use GLSL syntax. You would use this property to specify the signed distance functions that get rendered.
 
-- *rayMarchFunc*: takes a string, and replaces the contents of `float RayMarch(vec3 ro, vec3 rd)` in the fragment shader. The string is interpreted as GLSL so you must use GLSL syntax.
+- **rayMarchFunc**: takes a string, and replaces the contents of `float RayMarch(vec3 ro, vec3 rd)` in the fragment shader. The string is interpreted as GLSL so you must use GLSL syntax.
 
-- *lighFunc*: takes a string, and replaces the contents of `float GetLight(vec3 p)` in the fragment shader. The string is interpreted as GLSL so you must use GLSL syntax.
+- **lightFunc**: takes a string, and replaces the contents of `float GetLight(vec3 p)` in the fragment shader. The string is interpreted as GLSL so you must use GLSL syntax.
 
-- *addGLSL*: takes a string and adds it to the top of the fragment shader as GLSL. This can be used to add aditional functions to the shader, which you can reference in GetDist, RayMarch, etc.
+- **addGLSL**: takes a string and adds it to the top of the fragment shader as GLSL. This can be used to add aditional functions to the shader, which you can reference in GetDist, RayMarch, etc.
 
-##### Example
+#### Example
 
 ![Example Image](/example-images/raymarch-example.png)
 
